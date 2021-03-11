@@ -1,0 +1,18 @@
+inputs:
+  name:
+    os: 'Your os'
+    default: 'No os default'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - name: Loading node_modules from cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ inputs.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - name: Retrieve build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifact
+        path: build

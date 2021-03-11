@@ -55,27 +55,18 @@ jobs:
     needs: check
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
+    - uses: ./.github/actions/init-test
       with:
-        path: node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        os: ${{ runner.os }}
     - run: ./tests/run.sh -f 2-master -i applySettings,applyFlags,getFeatures
 
   karma-management:
     needs: check
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
+    - uses: ./.github/actions/init-test
       with:
-        path: node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-    - name: Retrieve artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifact
-        path: build
+        os: ${{ runner.os }}
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
     - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i applySettings,applyFlags,getFeatures
@@ -95,27 +86,18 @@ jobs:
     needs: check
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
+    - uses: ./.github/actions/init-test
       with:
-        path: node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        os: ${{ runner.os }}
     - run: ./tests/run.sh -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
 
   karma-btc-others:
     needs: check
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
+    - uses: ./.github/actions/init-test
       with:
-        path: node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-    - name: Retrieve artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifact
-        path: build
+        os: ${{ runner.os }}
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
     - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
