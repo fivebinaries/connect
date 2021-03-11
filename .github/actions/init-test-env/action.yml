@@ -1,9 +1,11 @@
+name: 'Preparing testing environment'
+description: 'Loads node_modules, build artifacts, docker image and necessary dependencies'
 inputs:
   name:
     os: 'Your os'
     default: 'No os default'
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Loading cached node_modules
       uses: actions/cache@v2
