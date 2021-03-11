@@ -55,6 +55,7 @@ jobs:
     needs: check
     runs-on: ubuntu-18.04
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/init-test
       with:
         os: ${{ runner.os }}
@@ -64,6 +65,7 @@ jobs:
     needs: check
     runs-on: ubuntu-18.04
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/init-test
       with:
         os: ${{ runner.os }}
@@ -86,6 +88,7 @@ jobs:
     needs: check
     runs-on: ubuntu-18.04
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/init-test
       with:
         os: ${{ runner.os }}
@@ -95,6 +98,7 @@ jobs:
     needs: check
     runs-on: ubuntu-18.04
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/actions/init-test
       with:
         os: ${{ runner.os }}
