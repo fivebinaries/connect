@@ -43,19 +43,24 @@ jobs:
     # - run: yarn lint
     - run: yarn test:unit
     - run: yarn build
-    - name: Pull trezor-user-env
-      run: docker pull registry.gitlab.com/satoshilabs/trezor/trezor-user-env/trezor-user-env
-    - run: mkdir docker-image
-    - run: docker save registry.gitlab.com/satoshilabs/trezor/trezor-user-env/trezor-user-env > docker-image/docker-image.tar
     - name: Save artifacts
       uses: actions/upload-artifact@v2
       with:
         name: build-artifact
-        path: |
-          build
-          docker-image
+        path: build
         if-no-files-found: error
         retention-days: 1
+
+  management:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i applySettings,applyFlags,getFeatures
 
   karma-management:
     needs: check
@@ -75,17 +80,6 @@ jobs:
     - run: sudo apt-get install xvfb
     - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i applySettings,applyFlags,getFeatures
 
-  # management:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i applySettings,applyFlags,getFeatures
-
   # btc-sign:
   #   needs: check
   #   runs-on: ubuntu-18.04
@@ -97,16 +91,34 @@ jobs:
   #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
   #   - run: ./tests/run.sh -f 2-master -i signTransaction
 
-  # btc-others:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
+  btc-others:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
+
+  karma-btc-others:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - name: Retrieve artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifact
+        path: build
+    # xvfb is required to run karma 
+    - run: sudo apt-get install xvfb
+    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
 
   # stellar:
   #   needs: check
