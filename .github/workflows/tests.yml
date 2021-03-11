@@ -46,7 +46,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build-artifact
-        path: build
+        path: |
+          build
+          node_modules
         if-no-files-found: error
         retention-days: 1
 
@@ -55,10 +57,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    # - uses: actions/cache@v2
+    #   with:
+    #     path: node_modules
+    #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
     - name: Retrieve artifacts
       uses: actions/download-artifact@v2
       with:
