@@ -26,7 +26,6 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - run: ls -al
     - run: yarn install
 
 
@@ -39,168 +38,138 @@ jobs:
       with:
         path: node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-    # - run: yarn flow
-    # - run: yarn lint
+    - run: yarn flow
+    - run: yarn lint
     - run: yarn test:unit
-    - run: yarn build
-    - name: Save artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-artifact
-        path: build
-        if-no-files-found: error
-        retention-days: 1
 
   management:
     needs: check
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - uses: ./.github/actions/init-test-env
+    - uses: actions/cache@v2
       with:
-        os: ${{ runner.os }}
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
     - run: ./tests/run.sh -f 2-master -i applySettings,applyFlags,getFeatures
 
-  karma-management:
+  btc-sign:
     needs: check
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - uses: ./.github/actions/init-test-env
+    - uses: actions/cache@v2
       with:
-        os: ${{ runner.os }}
-    # xvfb is required to run karma 
-    - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i applySettings,applyFlags,getFeatures
-
-  # btc-sign:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i signTransaction
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i signTransaction
 
   btc-others:
     needs: check
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - uses: ./.github/actions/init-test-env
+    - uses: actions/cache@v2
       with:
-        os: ${{ runner.os }}
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
     - run: ./tests/run.sh -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
 
-  karma-btc-others:
+  stellar:
     needs: check
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - uses: ./.github/actions/init-test-env
+    - uses: actions/cache@v2
       with:
-        os: ${{ runner.os }}
-    # xvfb is required to run karma 
-    - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i stellarGetAddress,stellarSignTransaction
 
-  # stellar:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i stellarGetAddress,stellarSignTransaction
+  cardano:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i cardanoGetAddress,cardanoGetPublicKey,cardanoSignTransaction
 
-  # cardano:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i cardanoGetAddress,cardanoGetPublicKey,cardanoSignTransaction
+  eos:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i eosGetPublicKey,eosSignTransaction
 
-  # eos:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i eosGetPublicKey,eosSignTransaction
+  eth:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i ethereumGetAddress,ethereumGetPublicKey,ethereumSignMessage,ethereumSignTransaction,ethereumVerifyMessage
 
-  # eth:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i ethereumGetAddress,ethereumGetPublicKey,ethereumSignMessage,ethereumSignTransaction,ethereumVerifyMessage
+  nem:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i nemGetAddress,nemSignTransaction
 
-  # nem:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i nemGetAddress,nemSignTransaction
+  ripple:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i rippleGetAddress,rippleSignTransaction
 
-  # ripple:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i rippleGetAddress,rippleSignTransaction
+  tezos:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i tezosGetAddress,tezosGetPublicKey
 
-  # tezos:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i tezosGetAddress,tezosGetPublicKey
+  binance:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i binanceSignTransaction
 
-  # binance:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i binanceSignTransaction
-
-  # lisk:
-  #   needs: check
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: node_modules
-  #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #   - run: ./tests/run.sh -f 2-master -i liskGetAddress,liskSignMessage,liskSignTransaction,liskVerifyMessage
+  lisk:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: ./tests/run.sh -f 2-master -i liskGetAddress,liskSignMessage,liskSignTransaction,liskVerifyMessage
