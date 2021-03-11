@@ -3,21 +3,21 @@
 
 inputs:
   os:
-    description: 'Runner os'
     required: true
+    description: 'Current runner os'
 
 runs:
   using: 'composite'
   steps:
     - run: echo Executing action ${{ inputs.os }}
       shell: bash
-    - name: Loading cached node_modules
-      uses: actions/cache@v2
-      with:
-        path: node_modules
-        key: ${{ inputs.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-    - name: Retrieve build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifact
-        path: build
+    # - name: Loading cached node_modules
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: node_modules
+    #     key: ${{ inputs.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    # - name: Retrieve build artifacts
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: build-artifact
+    #     path: build
