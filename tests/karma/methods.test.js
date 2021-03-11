@@ -1,5 +1,3 @@
-/* @flow */
-
 import fixtures from '../__fixtures__';
 
 const { setup, skipTest, initTrezorConnect, Controller, TrezorConnect } = global.Trezor;
