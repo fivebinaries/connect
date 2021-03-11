@@ -11,8 +11,7 @@ runs:
   steps:
     - run: echo Executing action ${{ inputs.os }}
       shell: bash
-    - name: Loading cached node_modules
-      uses: actions/cache@v2
+    - uses: actions/cache@v2
       with:
         path: node_modules
         key: ${{ inputs.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
