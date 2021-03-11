@@ -20,7 +20,7 @@ import ethereumSignMessage from './ethereumSignMessage';
 import ethereumSignTransaction from './ethereumSignTransaction';
 import ethereumVerifyMessage from './ethereumVerifyMessage';
 import getAccountInfo from './getAccountInfo';
-import getFeatures from './getFeatures';
+// import getFeatures from './getFeatures';
 import liskGetAddress from './liskGetAddress';
 import liskSignMessage from './liskSignMessage';
 import liskSignTransaction from './liskSignTransaction';
@@ -81,7 +81,7 @@ let fixtures = [
     getAddressMultisig,
     getAddressSegwit,
     // todo: missing fixtures: GetDeviceState.js
-    getFeatures,
+    // getFeatures,
     getPublicKey,
     // todo: missing fixtures: GetSettings.js
     liskGetAddress,
