@@ -94,8 +94,8 @@ module.exports = {
             path: false,
             net: false, // ignore "net" and "tls" imports in "ripple-lib"
             tls: false,
-            crypto: false, // no polyfill
-            // crypto: require.resolve('crypto-browserify'), // polyfill, adds a lot of data
+            // crypto: false, // no polyfill
+            crypto: require.resolve('crypto-browserify'), // polyfill, adds a lot of data
             stream: require.resolve('stream-browserify'), // polyfill
         },
     },
