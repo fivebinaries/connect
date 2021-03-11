@@ -5,8 +5,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
-    - name: Loading node_modules from cache
+    - name: Loading cached node_modules
       uses: actions/cache@v2
       with:
         path: node_modules
