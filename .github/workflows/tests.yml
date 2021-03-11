@@ -38,8 +38,8 @@ jobs:
       with:
         path: node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-    - run: yarn flow
-    - run: yarn lint
+    # - run: yarn flow
+    # - run: yarn lint
     - run: yarn test:unit
 
   karma-management:
@@ -51,8 +51,10 @@ jobs:
       with:
         path: node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    # xvfb is required to run karma 
     - run: yarn build
-    - run: ./tests/run-karma.sh -f 2-master -i applySettings,applyFlags,getFeatures
+    - run: sudo apt-get install xvfb
+    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i applySettings,applyFlags,getFeatures
 
   # management:
   #   needs: check
