@@ -1,12 +1,16 @@
-name: 'Preparing testing environment'
-description: 'Loads node_modules, build artifacts, docker image and necessary dependencies'
+# Testing environment
+# Loads node_modules, build artifacts, docker image and necessary dependencies
+
 inputs:
-  name:
-    os: 'Your os'
-    default: 'No os default'
+  os:
+    description: 'Runner os'
+    required: true
+
 runs:
   using: 'composite'
   steps:
+    - run: echo Executing action ${{ inputs.os }}
+      shell: bash
     - name: Loading cached node_modules
       uses: actions/cache@v2
       with:
