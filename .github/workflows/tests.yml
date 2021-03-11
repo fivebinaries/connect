@@ -26,6 +26,7 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
+    - run: ls -al
     - run: yarn install
 
 
@@ -43,10 +44,9 @@ jobs:
     - run: yarn test:unit
     - run: yarn build
     - name: Pull trezor-user-env
-      run: |
-        docker pull registry.gitlab.com/satoshilabs/trezor/trezor-user-env/trezor-user-env
-        mkdir docker-image
-        docker save registry.gitlab.com/satoshilabs/trezor/trezor-user-env/trezor-user-env > docker-image/docker-image.tar
+      run: docker pull registry.gitlab.com/satoshilabs/trezor/trezor-user-env/trezor-user-env
+    - run: mkdir docker-image
+    - run: docker save registry.gitlab.com/satoshilabs/trezor/trezor-user-env/trezor-user-env > docker-image/docker-image.tar
     - name: Save artifacts
       uses: actions/upload-artifact@v2
       with:
