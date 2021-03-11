@@ -42,6 +42,18 @@ jobs:
     - run: yarn lint
     - run: yarn test:unit
 
+  karma-management:
+    needs: check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - run: yarn build
+    - run: ./tests/run-karma.sh -f 2-master -i applySettings,applyFlags,getFeatures
+
   management:
     needs: check
     runs-on: ubuntu-18.04
