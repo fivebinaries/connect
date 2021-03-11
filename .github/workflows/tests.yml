@@ -41,6 +41,13 @@ jobs:
     # - run: yarn flow
     # - run: yarn lint
     - run: yarn test:unit
+    - run: yarn build
+    - name: Save artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact
+          path: build
+          retention-days: 1
 
   karma-management:
     needs: check
@@ -51,8 +58,12 @@ jobs:
       with:
         path: node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    - name: Retrieve artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: build
     # xvfb is required to run karma 
-    - run: yarn build
     - run: sudo apt-get install xvfb
     - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i applySettings,applyFlags,getFeatures
 
