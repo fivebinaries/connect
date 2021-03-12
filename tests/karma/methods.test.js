@@ -146,37 +146,35 @@ fixtures.forEach(testCase => {
         testCase.tests.forEach(t => {
             // check if test should be skipped on current configuration
             const testMethod = skipTest(t.skip) ? it.skip : it;
-            testMethod(t.description, async done => {
-                if (t.customTimeout) {
-                    jasmine.DEFAULT_TIMEOUT_INTERVAL = t.customTimeout;
-                }
-                if (!controller) {
-                    done(new Error('Controller not found'));
-                    return;
-                }
+            testMethod(
+                t.description,
+                async done => {
+                    if (!controller) {
+                        done(new Error('Controller not found'));
+                        return;
+                    }
 
-                if (t.mnemonic && t.mnemonic !== currentMnemonic) {
-                    // single test requires different seed, switch it
-                    await setup(controller, { mnemonic: t.mnemonic });
-                    currentMnemonic = t.mnemonic;
-                } else if (!t.mnemonic && testCase.setup.mnemonic !== currentMnemonic) {
-                    // restore testCase.setup
-                    await setup(controller, testCase.setup);
-                    currentMnemonic = testCase.setup.mnemonic;
-                }
+                    if (t.mnemonic && t.mnemonic !== currentMnemonic) {
+                        // single test requires different seed, switch it
+                        await setup(controller, { mnemonic: t.mnemonic });
+                        currentMnemonic = t.mnemonic;
+                    } else if (!t.mnemonic && testCase.setup.mnemonic !== currentMnemonic) {
+                        // restore testCase.setup
+                        await setup(controller, testCase.setup);
+                        currentMnemonic = testCase.setup.mnemonic;
+                    }
 
-                controller.options.name = t.description;
-                const result = await TrezorConnect[testCase.method](t.params);
-                console.warn('TC RES', testCase.method, result);
-                const expected = t.result
-                    ? { success: true, payload: t.result }
-                    : { success: false };
-                expect(result).toMatchObject(expected);
-                if (t.customTimeout) {
-                    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-                }
-                done();
-            });
+                    controller.options.name = t.description;
+                    const result = await TrezorConnect[testCase.method](t.params);
+                    console.warn('TC RES', testCase.method, result);
+                    const expected = t.result
+                        ? { success: true, payload: t.result }
+                        : { success: false };
+                    expect(result).toMatchObject(expected);
+                    done();
+                },
+                t.customTimeout || 20000,
+            );
         });
 
         // it('should test window open event', async (done) => {

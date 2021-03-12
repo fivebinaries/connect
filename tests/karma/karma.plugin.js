@@ -5,24 +5,23 @@ const TrezorReporter = (rootConfig, logger) => {
 
     return {
         onRunStart: () => {
-            log.warn('onRunStart');
-            global.TX_CACHE2 = 'FOO';
+            log.info('Running trezor-connect tests...');
+            log.info('FW:', process.env.TESTS_FIRMWARE);
+            log.info('Methods:', process.env.TESTS_INCLUDED_METHODS || 'All');
         },
 
-        onBrowserStart: () => {
-            log.warn('onBrowserStart');
+        onSpecStart: (_browser, spec) => {
+            log.warn('onSpecStart', spec);
         },
 
-        onBrowserComplete: () => {
-            log.warn('onBrowserComplete');
-        },
-
-        onSpecStarted: () => {
-            log.warn('onSpecStarted');
-        },
-
-        onSpecComplete: () => {
-            log.warn('onSpecComplete');
+        onSpecComplete: (_browser, spec) => {
+            log.info('onSpecComplete...', spec.fullName);
+            log.info('onSpecComplete success:', spec.success);
+            // if (spec.success) {
+            //     log.info(spec.fullName);
+            // } else {
+            //     log.error(spec.fullName, 'failed');
+            // }
         },
 
         onRunComplete: () => {
@@ -30,12 +29,8 @@ const TrezorReporter = (rootConfig, logger) => {
         },
 
         onExit: done => {
-            log.warn('Stop python server');
-            if (global.pythonProcess) {
-                global.pythonProcess = null;
-            } else {
-                log.warn('Kill python server: Server not found');
-            }
+            log.warn('onExit');
+            // stop user env?
             done();
         },
     };

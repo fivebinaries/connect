@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 export const CACHE = {};
+
 const cacheFiles = dir => {
     const dirFiles = fs.readdirSync(dir);
     dirFiles.forEach(file => {
