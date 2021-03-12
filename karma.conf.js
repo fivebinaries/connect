@@ -1,5 +1,3 @@
-// https://raw.githubusercontent.com/zyml/es6-karma-jasmine-webpack-boilerplate/master/karma.config.js
-
 import path from 'path';
 import webpackConfig from './webpack/config.karma.babel';
 
@@ -33,23 +31,18 @@ module.exports = config => {
         //     }
         // },
 
-        plugins: ['karma-*', path.resolve('./tests/karma/karma.reporter.js')],
+        plugins: ['karma-*', path.resolve(__dirname, './tests/karma/karma.plugin.js')],
         frameworks: ['jasmine', 'webpack'],
         preprocessors: {
             './tests/common.setup.js': 'webpack',
             './src/js/**/*.js': 'coverage',
+            './tests/__txcache__/index.js': 'cachedTx',
             './tests/karma/**/*.test.js': ['webpack'],
         },
         files: [
             './tests/common.setup.js',
+            './tests/__txcache__/index.js',
             './tests/karma/**/*.test.js',
-            {
-                pattern: 'src/data/**/*.json',
-                watched: false,
-                included: false,
-                served: true,
-                nocache: true,
-            },
             {
                 pattern: 'build/**/*.*',
                 watched: false,
@@ -59,19 +52,17 @@ module.exports = config => {
             },
         ],
         proxies: {
-            '/_karma_webpack_/data/': '/base/src/data/',
             '/build/': '/base/build/',
         },
 
         colors: true,
-        logLevel: config.LOG_ERROR,
+        logLevel: config.DEBUG,
         webpackMiddleware: {
             stats: 'errors-only',
         },
         webpack: webpackConfig,
 
-        // reporters: ['progress', 'coverage', 'trezor'],
-        reporters: ['progress', 'coverage'],
+        reporters: ['progress', 'coverage', 'trezor'],
         coverageReporter: {
             dir: 'coverage',
             reporters: [

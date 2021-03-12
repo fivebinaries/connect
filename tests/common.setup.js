@@ -1,7 +1,6 @@
 import { Controller } from './websocket-client';
 import TrezorConnect, { UI } from '../src/js/index';
 import { versionCompare } from '../src/js/utils/versionUtils';
-// import { TX_CACHE } from './__txcache__';
 
 const MNEMONICS = {
     mnemonic_all: 'all all all all all all all all all all all all',
@@ -74,8 +73,8 @@ const initTrezorConnect = async (controller, options) => {
 
     await TrezorConnect.init({
         manifest: {
-            appUrl: 'a',
-            email: 'b',
+            appUrl: 'tests.connect.trezor.io',
+            email: 'tests@connect.trezor.io',
         },
         webusb: false,
         debug: false,
@@ -159,6 +158,6 @@ const ADDRESS_N = path => {
 };
 
 global.TestUtils = {
+    ...global.TestUtils,
     ADDRESS_N,
-    TX_CACHE: () => undefined,
 };
