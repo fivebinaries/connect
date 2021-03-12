@@ -20,6 +20,7 @@ trap cleanup EXIT
 run() {
   # fetch latest image, can be commented out if you do not need latest master
   echo "Pulling latest trezor-user-env"
+  # TODO: check if there is already running instance
   docker pull registry.gitlab.com/satoshilabs/trezor/trezor-user-env/trezor-user-env
 
   if [ $GUI = false ]; then
@@ -59,8 +60,13 @@ run() {
   done
   echo "trezor-user-env loaded up"
 
-  echo "Running yarn"
-  yarn jest --config jest.config.integration.js --verbose --detectOpenHandles --forceExit --coverage $COVERAGE
+  echo "Running ${TEST_SCRIPT}"
+  echo "    Firmware: ${FIRMWARE}"
+  echo "    Included methods: ${INCLUDED_METHODS}"
+  echo "    Excluded methods: ${EXCLUDED_METHODS}"
+
+  # run actual test script
+  ${TEST_SCRIPT}
 }
 
 show_usage() {
@@ -71,23 +77,23 @@ show_usage() {
   echo "  -f       Use specific firmware version, for example: 2.1.4., 2.3.0"
   echo "  -i       Included methods only, for example: applySettings,signTransaction"
   echo "  -e       All methods except excluded, for example: applySettings,signTransaction"
-  echo "  -c       Collect coverage"
+  echo "  -s       test script (default yarn test:integration)"
 }
 
 FIRMWARE='2-master'
 INCLUDED_METHODS=''
 EXCLUDED_METHODS=''
 GUI=false
-COVERAGE=false
+TEST_SCRIPT='yarn test:integration'
 
 OPTIND=1
-while getopts ":i:e:f:hgc" opt; do
+while getopts ":i:e:f:s:hg" opt; do
   case $opt in
-  c)
-    COVERAGE=true
-    ;;
   g)
     GUI=true
+    ;;
+  s)
+    TEST_SCRIPT=$OPTARG
     ;;
   f)
     FIRMWARE=$OPTARG

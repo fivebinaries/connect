@@ -65,7 +65,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i applySettings,applyFlags,getFeatures
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i applySettings,applyFlags,getFeatures
 
   btc-sign:
     needs: check
@@ -83,7 +83,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i signTransaction
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i signTransaction
 
   btc-others:
     needs: check
@@ -101,7 +101,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i getAccountInfo,getAddress,getPublicKey,signMessage,verifyMessage
 
   stellar:
     needs: check
@@ -119,7 +119,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i stellarGetAddress,stellarSignTransaction
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i stellarGetAddress,stellarSignTransaction
 
   cardano:
     needs: check
@@ -137,7 +137,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i cardanoGetAddress,cardanoGetPublicKey,cardanoSignTransaction
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i cardanoGetAddress,cardanoGetPublicKey,cardanoSignTransaction
 
   eos:
     needs: check
@@ -155,7 +155,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i eosGetPublicKey,eosSignTransaction
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i eosGetPublicKey,eosSignTransaction
 
   eth:
     needs: check
@@ -173,7 +173,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i ethereumGetAddress,ethereumGetPublicKey,ethereumSignMessage,ethereumSignTransaction,ethereumVerifyMessage
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i ethereumGetAddress,ethereumGetPublicKey,ethereumSignMessage,ethereumSignTransaction,ethereumVerifyMessage
 
   nem:
     needs: check
@@ -191,7 +191,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i nemGetAddress,nemSignTransaction
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i nemGetAddress,nemSignTransaction
 
   ripple:
     needs: check
@@ -209,7 +209,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i rippleGetAddress,rippleSignTransaction
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i rippleGetAddress,rippleSignTransaction
 
   tezos:
     needs: check
@@ -227,7 +227,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i tezosGetAddress,tezosGetPublicKey
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i tezosGetAddress,tezosGetPublicKey
 
   binance:
     needs: check
@@ -245,7 +245,7 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i binanceSignTransaction
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i binanceSignTransaction
 
   lisk:
     needs: check
@@ -263,4 +263,4 @@ jobs:
         path: build
     # xvfb is required to run karma 
     - run: sudo apt-get install xvfb
-    - run: xvfb-run --auto-servernum ./tests/run-karma.sh -f 2-master -i liskGetAddress,liskSignMessage,liskSignTransaction,liskVerifyMessage
+    - run: xvfb-run --auto-servernum ./tests/run.sh -s 'yarn test:karma' -f 2-master -i liskGetAddress,liskSignMessage,liskSignTransaction,liskVerifyMessage
