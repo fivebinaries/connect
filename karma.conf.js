@@ -35,9 +35,9 @@ module.exports = config => {
         frameworks: ['jasmine', 'webpack'],
         preprocessors: {
             './tests/common.setup.js': 'webpack',
-            './src/js/**/*.js': 'coverage',
-            './tests/__txcache__/index.js': 'cachedTx',
+            './tests/__txcache__/index.js': 'cachedTx', // custom preprocessor in karma.plugin
             './tests/karma/**/*.test.js': ['webpack'],
+            './src/js/**/*.js': 'coverage',
         },
         files: [
             './tests/common.setup.js',
@@ -51,9 +51,9 @@ module.exports = config => {
                 nocache: true,
             },
         ],
-        proxies: {
-            '/build/': '/base/build/',
-        },
+        // proxies: {
+        //     '/build/': '/base/build/',
+        // },
 
         colors: true,
         logLevel: config.DEBUG,
