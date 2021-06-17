@@ -3,7 +3,7 @@ import AbstractMethod from './AbstractMethod';
 import Discovery from './helpers/Discovery';
 import { validateParams, getFirmwareRange } from './helpers/paramsValidator';
 import { validatePath, getSerializedPath } from '../../utils/pathUtils';
-import { getAccountLabel } from '../../utils/accountUtils';
+import { getAccountLabel, isUtxoBased } from '../../utils/accountUtils';
 import { resolveAfter } from '../../utils/promiseUtils';
 import { getCoinInfo } from '../../data/CoinInfo';
 
@@ -33,6 +33,7 @@ export default class GetAccountInfo extends AbstractMethod {
 
     constructor(message: CoreMessage) {
         super(message);
+
         this.requiredPermissions = ['read'];
         this.info = 'Export account info';
         this.useDevice = true;
@@ -296,7 +297,7 @@ export default class GetAccountInfo extends AbstractMethod {
 
                 let utxo: AccountUtxo;
                 if (
-                    request.coinInfo.type === 'bitcoin' &&
+                    isUtxoBased &&
                     typeof request.details === 'string' &&
                     request.details !== 'basic'
                 ) {
@@ -398,11 +399,8 @@ export default class GetAccountInfo extends AbstractMethod {
         });
 
         let utxo: AccountUtxo;
-        if (
-            request.coinInfo.type === 'bitcoin' &&
-            typeof request.details === 'string' &&
-            request.details !== 'basic'
-        ) {
+
+        if (isUtxoBased && typeof request.details === 'string' && request.details !== 'basic') {
             utxo = await blockchain.getAccountUtxo(account.descriptor);
         }
 

@@ -5,6 +5,8 @@
 import BlockbookWorkerWrapper from '@trezor/blockchain-link/build/module/blockbook-worker.js';
 // $FlowIssue
 import RippleWorkerWrapper from '@trezor/blockchain-link/build/module/ripple-worker.js';
+// $FlowIssue
+import BlockfrostWorkerWrapper from '@trezor/blockchain-link/build/module/blockfrost-worker.js';
 import TrezorLink from 'trezor-link';
 import RNUsbPlugin from './RNUsbPlugin';
 
@@ -15,3 +17,5 @@ export const ReactNativeUsbPlugin = () => new TrezorLink.Lowlevel(new RNUsbPlugi
 export const BlockbookWorker = () => new BlockbookWorkerWrapper();
 
 export const RippleWorker = () => new RippleWorkerWrapper();
+
+export const BlockfrostWorker = () => new BlockfrostWorkerWrapper();

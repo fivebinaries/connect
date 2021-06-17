@@ -610,6 +610,7 @@ export default class DeviceCommands {
         const address_n = Array.isArray(indexOrPath)
             ? indexOrPath
             : getAccountAddressN(coinInfo, indexOrPath);
+
         if (coinInfo.type === 'bitcoin') {
             const resp = await this.getHDNode(address_n, coinInfo, false);
             return {
@@ -622,6 +623,15 @@ export default class DeviceCommands {
             const resp = await this.ethereumGetAddress({ address_n }, coinInfo);
             return {
                 descriptor: resp.address,
+                address_n,
+            };
+        }
+        if (coinInfo.shortcut === 'ADA' || coinInfo.shortcut === 'tADA') {
+            const { message } = await this.typedCall('CardanoGetPublicKey', 'CardanoPublicKey', {
+                address_n,
+            });
+            return {
+                descriptor: message.xpub,
                 address_n,
             };
         }

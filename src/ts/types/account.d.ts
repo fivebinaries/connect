@@ -1,5 +1,6 @@
 import { TxInputType, TxOutputType } from './trezor/protobuf';
 import { VinVout, BlockbookTransaction } from './backend/transactions';
+import { CardanoOutput, CardanoInput } from './networks/cardano';
 
 // getAccountInfo params
 export interface GetAccountInfo {
@@ -56,6 +57,7 @@ export interface AccountUtxo {
     confirmations: number;
     coinbase?: boolean;
     required?: boolean;
+    cardanoUnit?: boolean;
 }
 
 // Transaction object
@@ -203,6 +205,33 @@ export interface PrecomposeParams {
     skipPermutation?: boolean;
     coin: string;
 }
+
+export type PrecomposedTransactionCardano =
+    | {
+          type: 'error';
+          error: string;
+      }
+    | {
+          type: 'nonfinal';
+          max?: string;
+          totalSpent: string; // all the outputs, no fee, no change
+          fee: string;
+          feePerByte: string;
+          bytes: number;
+      }
+    | {
+          type: 'final';
+          max?: string;
+          totalSpent: string; // all the outputs, no fee, no change
+          fee: string;
+          feePerByte: string;
+          bytes: number;
+          transaction: {
+              inputs: CardanoInput[];
+              outputs: CardanoOutput[];
+              outputsPermutation: number[];
+          };
+      };
 
 export type PrecomposedTransaction =
     | {

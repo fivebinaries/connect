@@ -1,6 +1,12 @@
 /* @flow */
-import type { TxInputType, TxOutputType } from './trezor/protobuf';
+import type {
+    TxInputType,
+    TxOutputType,
+    CardanoTxInputType,
+    CardanoTxOutputType,
+} from './trezor/protobuf';
 import type { VinVout, BlockbookTransaction } from './backend/transactions';
+import type { CardanoInput, CardanoOutput } from './networks/cardano';
 
 // getAccountInfo params
 export type GetAccountInfo = {
@@ -57,6 +63,7 @@ export type AccountUtxo = {
     confirmations: number,
     coinbase?: boolean,
     required?: boolean,
+    cardanoUnit?: string,
 };
 
 // Transaction object
@@ -229,6 +236,60 @@ export type PrecomposedTransaction =
           transaction: {
               inputs: TxInputType[],
               outputs: TxOutputType[],
+              outputsPermutation: number[],
+          },
+      };
+
+export type PrecomposedTransactionCardano =
+    | {
+          type: 'error',
+          error: string,
+      }
+    | {
+          type: 'nonfinal',
+          max: string | typeof undefined,
+          totalSpent: string, // all the outputs, no fee, no change
+          fee: string,
+          feePerByte: string,
+          bytes: number,
+      }
+    | {
+          type: 'final',
+          max: string | typeof undefined,
+          totalSpent: string, // all the outputs, no fee, no change
+          fee: string,
+          feePerByte: string,
+          bytes: number,
+          transaction: {
+              inputs: CardanoInput[],
+              outputs: CardanoOutput[],
+              outputsPermutation: number[],
+          },
+      };
+
+export type PrecomposedTransactionCardano =
+    | {
+          type: 'error',
+          error: string,
+      }
+    | {
+          type: 'nonfinal',
+          max: string | typeof undefined,
+          totalSpent: string, // all the outputs, no fee, no change
+          fee: string,
+          feePerByte: string,
+          bytes: number,
+      }
+    | {
+          type: 'final',
+          max: string | typeof undefined,
+          totalSpent: string, // all the outputs, no fee, no change
+          fee: string,
+          feePerByte: string,
+          bytes: number,
+          transaction: {
+              inputs: CardanoInput[],
+              outputs: CardanoOutput[],
               outputsPermutation: number[],
           },
       };

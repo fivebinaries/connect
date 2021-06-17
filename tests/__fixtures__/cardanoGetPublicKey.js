@@ -41,5 +41,25 @@ export default {
                     'b90fb812a2268e9569ff1172e8daed1da3dc7e72c7bded7c5bcb7282039f90d5fd8e71c1543de2cdc7f7623130c5f2cceb53549055fa1f5bc88199989e08cce7',
             },
         },
+        {
+            description: "m/1852'/1815'/0'",
+            params: {
+                path: "m/1852'/1815'/0'",
+            },
+            result: {
+                publicKey:
+                    'd507c8f866691bd96e131334c355188b1a1d0b2fa0ab11545075aab332d77d9eb19657ad13ee581b56b0f8d744d66ca356b93d42fe176b3de007d53e9c4c4e7a',
+            },
+        },
+        {
+            description: "m/1852'/1815'/0'/0/0",
+            params: {
+                path: "m/1852'/1815'/0'/0/0",
+            },
+            result: {
+                publicKey:
+                    '5d010cf16fdeff40955633d6c565f3844a288a24967cf6b76acbeb271b4f13c1f123474e140a2c360b01f0fa66f2f22e2e965a5b07a80358cf75f77abbd66088',
+            },
+        },
     ],
 };
