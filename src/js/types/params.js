@@ -61,6 +61,7 @@ export type CommonParams = {
     keepSession?: boolean,
     skipFinalReload?: boolean,
     useCardanoDerivaton?: boolean,
+    derivationType?: CardanoDerivationType,
 };
 
 export type Bundle<T> = {

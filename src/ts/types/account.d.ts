@@ -1,4 +1,4 @@
-import { CardanoDerivationType, TxInputType, TxOutputType } from './trezor/protobuf';
+import { TxInputType, TxOutputType } from './trezor/protobuf';
 import { VinVout, BlockbookTransaction } from './backend/transactions';
 
 export type DiscoveryAccountType = 'p2pkh' | 'p2sh' | 'p2tr' | 'p2wpkh';
@@ -21,7 +21,6 @@ export interface GetAccountInfo {
         seq: number;
     };
     defaultAccountType?: DiscoveryAccountType;
-    derivationType?: CardanoDerivationType;
 }
 
 export interface TokenInfo {

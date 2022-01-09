@@ -11,7 +11,6 @@ import type {
     CardanoTxAuxiliaryDataSupplementType,
     CardanoTxSigningMode,
     CardanoTxWitnessType,
-    CardanoDerivationType,
 } from '../trezor/protobuf';
 
 // GetPublicKey
@@ -19,7 +18,6 @@ import type {
 export type CardanoGetPublicKey = {
     path: string | number[],
     showOnTrezor?: boolean,
-    derivationType?: CardanoDerivationType,
 };
 
 export type CardanoPublicKey = {
@@ -52,7 +50,6 @@ export type CardanoGetAddress = {
     networkId: number,
     address?: string,
     showOnTrezor?: boolean,
-    derivationType?: CardanoDerivationType,
     useEventListener?: boolean, // set automatically if UI.ADDRESS_VALIDATION listener is used
 };
 
@@ -80,7 +77,6 @@ export type CardanoNativeScript = {
 export type CardanoGetNativeScriptHash = {
     script: CardanoNativeScript,
     displayFormat: CardanoNativeScriptHashDisplayFormat,
-    derivationType?: CardanoDerivationType,
 };
 
 export type CardanoNativeScriptHash = {
@@ -195,7 +191,6 @@ export type CardanoSignTransaction = {
     protocolMagic: number,
     networkId: number,
     signingMode: CardanoTxSigningMode,
-    derivationType?: CardanoDerivationType,
 };
 
 export type CardanoSignedTxWitness = {

@@ -1,3 +1,5 @@
+import { CardanoDerivationType } from "./trezor/protobuf";
+
 export interface Unsuccessful {
     success: false;
     payload: { error: string; code?: string };
@@ -59,6 +61,7 @@ export interface CommonParams {
     keepSession?: boolean;
     skipFinalReload?: boolean;
     useCardanoDerivation?: boolean;
+    derivationType?: CardanoDerivationType;
 }
 
 export interface Bundle<T> {
